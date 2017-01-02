@@ -1,3 +1,3 @@
 # .dotfiles
 
-Ala ma kota a kot ma ale lel
+My linux dotfiles.
