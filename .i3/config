@@ -13,7 +13,7 @@ set $mod Mod1
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:monospace 14
+font pango:DejaVu Sans Mono 11
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
@@ -103,16 +103,16 @@ bindsym $mod+Shift+minus move scratchpad
 # If there are multiple scratchpad windows, this command cycles through them.
 bindsym $mod+minus scratchpad show
 
-set $workspace1 "1.Title "
-set $workspace2 "2.Files "
-set $workspace3 "3.Reader "
-set $workspace4 "4.Browser "
-set $workspace5 "5.Code "
-set $workspace6 "6.Termial "
-set $workspace7 "7.Music "
-set $workspace8 "8.Pictures "
-set $workspace9 "9.Video "
-set $workspace10 "10"
+set $workspace1 1
+set $workspace2 2
+set $workspace3 3
+set $workspace4 4
+set $workspace5 5
+set $workspace6 6
+set $workspace7 7
+set $workspace8 8
+set $workspace9 9
+set $workspace10 10
 
 # switch to workspace
 bindsym $mod+1 workspace $workspace1
@@ -127,16 +127,16 @@ bindsym $mod+9 workspace $workspace9
 bindsym $mod+0 workspace $workspace10
 
 #numeric keyboard
-bindsym $mod+KP_1 workspace $workspace1
-bindsym $mod+KP_2 workspace $workspace2
-bindsym $mod+KP_3 workspace $workspace3
-bindsym $mod+KP_4 workspace $workspace4
-bindsym $mod+KP_5 workspace $workspace5
-bindsym $mod+KP_6 workspace $workspace6
-bindsym $mod+KP_7 workspace $workspace7
-bindsym $mod+KP_8 workspace $workspace8
-bindsym $mod+KP_9 workspace $workspace9
-bindsym $mod+KP_0 workspace $workspace10
+bindcode $mod+87 workspace $workspace1
+bindcode $mod+88 workspace $workspace2
+bindcode $mod+89 workspace $workspace3
+bindcode $mod+83 workspace $workspace4
+bindcode $mod+84 workspace $workspace5
+bindcode $mod+85 workspace $workspace6
+bindcode $mod+79 workspace $workspace7
+bindcode $mod+80 workspace $workspace8
+bindcode $mod+81 workspace $workspace9
+bindcode $mod+90 workspace $workspace10
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace $workspace1
@@ -150,18 +150,18 @@ bindsym $mod+Shift+8 move container to workspace $workspace8
 bindsym $mod+Shift+9 move container to workspace $workspace9
 bindsym $mod+Shift+0 move container to workspace $workspace10
 
-#numeric keyboard
+#numeric keyboard (also moves focus to the other workspace)
 
-bindsym $mod+Shift+KP_1 move container to workspace $workspace1; workspace $workspace1
-bindsym $mod+Shift+KP_2 move container to workspace $workspace2; workspace $workspace2
-bindsym $mod+Shift+KP_3 move container to workspace $workspace3; workspace $workspace3
-bindsym $mod+Shift+KP_4 move container to workspace $workspace4; workspace $workspace4
-bindsym $mod+Shift+KP_5 move container to workspace $workspace5; workspace $workspace5
-bindsym $mod+Shift+KP_6 move container to workspace $workspace6; workspace $workspace6
-bindsym $mod+Shift+KP_7 move container to workspace $workspace7; workspace $workspace7
-bindsym $mod+Shift+KP_8 move container to workspace $workspace8; workspace $workspace8
-bindsym $mod+Shift+KP_9 move container to workspace $workspace9; workspace $workspace9
-bindsym $mod+Shift+KP_0 move container to workspace $workspace10; workspace $workspace10
+bindcode $mod+Shift+87 move container to workspace $workspace1; workspace $workspace1
+bindcode $mod+Shift+88 move container to workspace $workspace2; workspace $workspace2
+bindcode $mod+Shift+89 move container to workspace $workspace3; workspace $workspace3
+bindcode $mod+Shift+83 move container to workspace $workspace4; workspace $workspace4
+bindcode $mod+Shift+84 move container to workspace $workspace5; workspace $workspace5
+bindcode $mod+Shift+85 move container to workspace $workspace6; workspace $workspace6
+bindcode $mod+Shift+79 move container to workspace $workspace7; workspace $workspace7
+bindcode $mod+Shift+80 move container to workspace $workspace8; workspace $workspace8
+bindcode $mod+Shift+81 move container to workspace $workspace9; workspace $workspace9
+bindcode $mod+Shift+90 move container to workspace $workspace10; workspace $workspace10
 
 #assign programs to workspaces
 
@@ -201,42 +201,103 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-#lock
-bindsym $mod+x exec ~/bin/lock.sh ~/Pictures/lock2.png
-#exec xautolock -time 2 -locker ~/bin/lock.sh ~/Pictures/lock2.png
-exec xset s 300 300
+#lock-----------------------------------------
+bindsym $mod+x exec ~/bin/lock.sh ~/Pictures/locks/lock3.png
 
-#edges
+#edges-----------------------------------------
 hide_edge_borders both
+#no borders for all windows 
 new_window none
+#only borders for terminal for better looks
+for_window [class="URxvt"] border pixel 1
 
+#screenshot
+bindsym $mod+z exec scrot ~/Pictures/Screenshots/%T-%m-%d-%H:%M:%S.png; exec notify-send "Screenshot Taken"
+
+#windows color, only set border color for terminal
+
+# class                  border  backgr. text    indicator child_border
+ client.focused          #ffffff #000000 #ffffff #ffffff   #ffffff
+ client.focused_inactive #ffffff #000000 #ffffff #ffffff   #ffffff
+ client.unfocused        #ffffff #000000 #888888 #ffffff   #ffffff
+ client.urgent           #ff0000 #000000 #ff8888 #ff0000   #ff0000
+#client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
+
+# client.background       #ffffff
+
+#---------------------------------
 workspace_auto_back_and_forth yes
-
-# Start i3bar to display a workspace bar (plus the system information i3status
-# finds out, if available)
-bar {
-        status_command i3status
-	position top
-	font pango: DejaVu Sans Mono 13
-	separator_symbol ":|:"
-	tray_padding 0
-}
 
 #touchpad toggle
 bindsym XF86TouchpadToggle exec ~/bin/toggle-touchpad
 #volume controls
-bindsym XF86AudioRaiseVolume exec pactl set-sink-volume 1 +5%; exec notify-send 'Volume +5%';
-bindsym XF86AudioLowerVolume exec pactl set-sink-volume 1 -5%
-bindsym XF86AudioMute exec pactl set-sink-mute 1 toggle
-# Sreen brightness controls
-bindsym XF86MonBrightnessUp exec xbacklight -inc 20 # increase screen brightness
-bindsym XF86MonBrightnessDown exec xbacklight -dec 20 # decrease screen brightness
+bindsym XF86AudioRaiseVolume exec ~/bin/chvol.sh +2 #increase sound volume
+bindsym XF86AudioLowerVolume exec ~/bin/chvol.sh -2 #decrease sound volume
+bindsym XF86AudioMute exec ~/bin/toggle-sound.sh #toggle sound
+#Sreen brightness controls
+bindsym XF86MonBrightnessUp exec ~/bin/chlight.sh +20 # increase screen brightness
+bindsym XF86MonBrightnessDown exec ~/bin/chlight.sh -20 # decrease screen brightness
+
+#MPD bindings
+bindsym $mod+p exec mpc toggle #pause/unpause
+bindsym $mod+bracketright exec mpc next #next song
+bindsym $mod+bracketleft exec mpc prev #prev song
 
 #turn off touchpad
-exec synclient TouchpadOff=1
+exec xinput --disable 11
 #startup compton
-exec compton -f
+exec compton -b
+
+bindsym $mod+q sticky toggle
+
 #restore wallpaper
 exec nitrogen --restore
 #start thunar in workspace2
 exec Thunar
+#start lemonbar
+exec_always ~/bin/lemon.sh
+
+#gaps
+gaps inner 10
+gaps outer 15
+
+set $mode_gaps Gaps: (o) outer, (i) inner
+set $mode_gaps_outer Outer Gaps: +|-|0 (local), Shift + +|-|0 (global)
+set $mode_gaps_inner Inner Gaps: +|-|0 (local), Shift + +|-|0 (global)
+bindsym $mod+Shift+g mode "$mode_gaps"
+
+mode "$mode_gaps" 
+{
+        bindsym o      mode "$mode_gaps_outer"
+        bindsym i      mode "$mode_gaps_inner"
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+
+mode "$mode_gaps_inner" 
+{
+        bindsym plus  gaps inner current plus 5
+        bindsym minus gaps inner current minus 5
+        bindsym 0     gaps inner current set 0
+
+        bindsym Shift+plus  gaps inner all plus 5
+        bindsym Shift+minus gaps inner all minus 5
+        bindsym Shift+0     gaps inner all set 0
+
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+
+mode "$mode_gaps_outer" 
+{
+        bindsym plus  gaps outer current plus 5
+        bindsym minus gaps outer current minus 5
+        bindsym 0     gaps outer current set 0
+
+        bindsym Shift+plus  gaps outer all plus 5
+        bindsym Shift+minus gaps outer all minus 5
+        bindsym Shift+0     gaps outer all set 0
+
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
