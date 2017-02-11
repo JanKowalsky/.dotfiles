@@ -165,7 +165,6 @@ bindcode $mod+Shift+90 move container to workspace $workspace10; workspace $work
 
 #assign programs to workspaces
 
-assign [class="Clementine"] $workspace7
 assign [class="Thunar"] $workspace2
 
 # reload the configuration file
